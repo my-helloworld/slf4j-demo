@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.chpengzh</groupId>
+    <artifactId>sl4fj-demo</artifactId>
+    <name>SLF4J Demo</name>
+    <version>1.0-SNAPSHOT</version>
+
+    <scm>
+        <connection>scm:git:https://github.com/my-helloworld/slf4j-demo.git</connection>
+        <developerConnection>scm:git:https://github.com/my-helloworld/slf4j-demo.git</developerConnection>
+        <url>https://github.com/my-helloworld/slf4j-demo</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>chpengzh</id>
+            <name>Pengzhi.Chen</name>
+            <url>https://chpengzh.com</url>
+            <email>chpengzh@foxmail.com</email>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+
+    <properties>
+        <!-- JDK compiler level setting -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <!-- Dependency version, ASCII order inc. -->
+        <dep.distruptor.version>3.4.2</dep.distruptor.version>
+        <dep.junit.version>4.11</dep.junit.version>
+        <dep.slf4j.version>1.7.25</dep.slf4j.version>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${dep.slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>${dep.distruptor.version}</version>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>org.slf4j</groupId>-->
+            <!--<artifactId>slf4j-log4j12</artifactId>-->
+            <!--<version>${dep.slf4j.version}</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${dep.junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
