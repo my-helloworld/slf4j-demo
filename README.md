@@ -12,6 +12,7 @@
 [简单日志门面(Simple Logging Facade for java, SLF4J)](https://github.com/qos-ch/slf4j)为各种日志框架提供了统一的接口封装，
 包括`java.util.logging`,`logback`以及`Log4j`等，
 使得最终用户能够在部署的时候灵活配置自己希望的Loging APIs实现。
+
 在应用开发中，需要统一按照SLF4J的API进行开发，在部署时，选择不同的日志系统包加入到JAVA CLASSPATH中，
 即可自动转换到不同的日志框架上。SLF4J隐藏了具体的转换、适配细节，将应用和具体日志框架解耦开来，
 如果在类路径中没有发现绑定的日志实现，SLF4J默认使用NOP实现。
@@ -19,6 +20,7 @@
 简言之，`slf4j-api`提供了一套标准的实现推展接口。
 抽离日志接口API有利于解决日志实现的依赖问题, 任何一个模块只要引入 `slf4j-api` 而不需要关心实现。
 而在构建应用入口的时候，在编译(或部署)时可以根据不同应用场景去引入不同的实现。
+
 而针对不同实现，可以添加一些额外的配置(如`kafka broker server`、`email`等特殊实现所依赖的参数)。
 这是典型的用插件化开发实现切片编程的思想。
 
@@ -28,13 +30,13 @@
 
 我们在使用`slf4j`的时候会创建一个`Logger`对象，这个创建过程通常是
 
-```
+```java
 org.slf4j.Logger LOGGER = LoggerFactory.getLogger("some-logger-name");
 ```
 
 因此我们分析该方法, 能定位到其实现的绑定方法`LoggerFactory#getILoggerFactory()`
 
-```
+```java
 public static ILoggerFactory getILoggerFactory() {
     if (INITIALIZATION_STATE == UNINITIALIZED) {
         synchronized (LoggerFactory.class) {
@@ -63,7 +65,7 @@ public static ILoggerFactory getILoggerFactory() {
 此方法中通过符号引用`org.slf4j.impl.StaticLoggerBinder.getSingleton().getLoggerFactory();`获取了一个`ILoggerFactory`对象。
 而正如我们所求的，`ILoggerFactory` 正好就是需要我们实现的`Logger`工厂接口
 
-```
+```java
 public interface ILoggerFactory {
 
     public Logger getLogger(String name);
@@ -79,7 +81,7 @@ public interface ILoggerFactory {
 
 - 实现接口`ILoggerFactoryBinder`
 
-```
+```java
 public interface LoggerFactoryBinder {
 
     public ILoggerFactory getLoggerFactory();
@@ -174,7 +176,7 @@ Java的内置队列如下表所示。
 
 > ArrayBlockingQueue 的重入锁锁声明
 
-```
+```java
 /** Main lock guarding all access */
 final ReentrantLock lock;
     
@@ -194,7 +196,7 @@ public ArrayBlockingQueue(int capacity, boolean fair) {
 
 > 添加与消费
 
-```
+```java
 public boolean offer(E e) {
     checkNotNull(e);
     final ReentrantLock lock = this.lock;
@@ -232,7 +234,7 @@ public E poll() {
 
 > 事件添加
 
-```
+```java
 /**
  * Event buffer, also used as monitor to protect itself and
  * discardMap from simulatenous modifications.
@@ -335,7 +337,7 @@ public void append(final LoggingEvent event) {
 
 每个周期都获取所有入队事件，并一次执行`appenders.appendLoopOnAppenders(events)`调用实际的消费逻辑
 
-```
+```java
 public void run() {
   boolean isActive = true;
 
@@ -419,7 +421,7 @@ public void run() {
 
 本`demo`项目目的在于实现一个`DemoAsyncLogger`实现对接`slf4j`，假设我们的日志事件定义如下:
 
-```
+```java
 public class LogEvent {
 
     public Level level;
@@ -435,7 +437,7 @@ public class LogEvent {
 
 日志工厂中需要读取配置文件，`slf4j-api` 中提供了一套解析配置的工具类，本文不对配置进行深入讨论，仅介绍一下`disruptor`的使用
 
-```
+```java
 /**
  * Logger的单例工厂，读取日志系统配置，并对日志落盘行为进行统一管理
  */
@@ -490,7 +492,7 @@ public enum DemoAsyncLoggerFactory implements ILoggerFactory {
 
 > 消息队列写入
 
-```
+```java
 public class DemoAsyncLogger implements Logger {
 
     //Override methods, ...
@@ -533,7 +535,7 @@ public class DemoAsyncLogger implements Logger {
 
 在工厂方法中我们看到了`Disruptor`在创建之后设置了一个handler用于在`Disruptor`工作线程中处理事件
 
-```
+```java
 public class LogEventHandler implements EventHandler<LogEvent> {
 
     private final PrintWriter printer;
@@ -569,7 +571,7 @@ public class LogEventHandler implements EventHandler<LogEvent> {
 
 第二章我们提到，slf4j需要我们实现类`StaticLoggerBinder`单例
 
-```
+```java
 /**
  * slf4j 实现对接的接口类
  */
@@ -610,7 +612,7 @@ public enum StaticLoggerBinder implements LoggerFactoryBinder {
 
 > 调用测试
 
-```
+```java
 public class Main {
 
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
