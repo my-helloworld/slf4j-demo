@@ -3,7 +3,7 @@
 最近的工作里有好几个同事向我问起了`slf4j`的一些配置和使用问题。
 本着问题需要被从根本解决的原则，我决定写一个样例项目来解释一下`slf4j-api`的一些接口问题，以及`log4j`对其的实现原理。
 
-项目地址为 [https://github.com/my-helloworld]
+项目地址为 [https://github.com/my-helloworld](https://github.com/my-helloworld)
 
 本项目就是一个`slf4j-api`简单的异步日志实现，原理参考`slf4j-log4j12`。代码精简易懂，方便初学者了解`slf4j-log4j`的一些实现细节。
 
